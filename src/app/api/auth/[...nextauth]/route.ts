@@ -10,10 +10,9 @@ const handler = NextAuth({
         password: { label: "Password", type: "password" },
       },
       async authorize(credentials) {
-        // Simple admin check for demonstration. 
-        // In production, use environment variables or a separate Admin collection.
-        const adminUser = process.env.ADMIN_USERNAME || "admin";
-        const adminPass = process.env.ADMIN_PASSWORD || "password123";
+        // Hardcoded admin for troubleshooting Vercel deployment
+        const adminUser = "admin";
+        const adminPass = "adminisme221";
 
         if (
           credentials?.username === adminUser &&
