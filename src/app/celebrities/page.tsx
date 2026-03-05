@@ -41,12 +41,12 @@ export default async function CelebritiesPage({
           <p className="text-zinc-500">Discover the icons that shape our culture.</p>
         </div>
         
-        <div className="flex gap-2 p-1 glass-morphism rounded-full">
+        <div className="flex overflow-x-auto scrollbar-hide -mx-4 px-4 md:mx-0 md:px-0 gap-2 p-1 glass-morphism rounded-full">
           {categories.map((cat) => (
             <Link
               key={cat}
               href={`/celebrities?category=${cat}`}
-              className={`px-6 py-2 rounded-full text-sm font-bold transition-all ${
+              className={`px-6 py-2 rounded-full text-sm font-bold transition-all whitespace-nowrap ${
                 category === cat ? "bg-white text-black" : "text-zinc-500 hover:text-white"
               }`}
             >
@@ -61,7 +61,7 @@ export default async function CelebritiesPage({
           const celebritySlug = celeb.slug || (celeb._id ? celeb._id.toString() : "");
           return (
             <CelebrityCard
-              key={celeb._id?.toString() || Math.random().toString()}
+              key={celebritySlug || celeb.name}
               slug={celebritySlug}
               name={celeb.name}
               category={celeb.category}

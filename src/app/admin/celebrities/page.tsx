@@ -13,14 +13,14 @@ export default async function AdminCelebritiesPage() {
 
   return (
     <div className="space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-500">
-      <div className="flex items-center justify-between">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
           <h1 className="text-4xl font-black tracking-tighter uppercase text-white mb-2">Celebrities</h1>
           <p className="text-zinc-500">Manage your roster of stars</p>
         </div>
         <Link 
           href="/admin/celebrities/new"
-          className="bg-white text-black px-6 py-3 rounded-xl font-bold flex items-center gap-2 hover:bg-zinc-200 transition-colors"
+          className="bg-white text-black px-6 py-3 rounded-xl font-bold flex items-center justify-center gap-2 hover:bg-zinc-200 transition-colors w-full sm:w-auto"
         >
           <Plus className="w-5 h-5" />
           Add Celebrity
@@ -28,7 +28,8 @@ export default async function AdminCelebritiesPage() {
       </div>
 
       <div className="glass-morphism rounded-3xl border border-white/5 cinematic-shadow overflow-hidden">
-        <table className="w-full text-left border-collapse">
+        <div className="overflow-x-auto scrollbar-hide">
+          <table className="w-full text-left border-collapse min-w-[800px]">
           <thead>
             <tr className="border-b border-white/5 bg-white/5 font-bold uppercase tracking-widest text-[10px] text-zinc-400">
               <th className="px-6 py-4">Star</th>
@@ -84,6 +85,7 @@ export default async function AdminCelebritiesPage() {
             )}
           </tbody>
         </table>
+        </div>
       </div>
     </div>
   );

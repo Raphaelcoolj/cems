@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { useState } from "react";
 import { 
   BarChart3, 
   Users, 
@@ -10,7 +11,9 @@ import {
   Settings as SettingsIcon, 
   LogOut, 
   Star,
-  ChevronRight
+  ChevronRight,
+  Menu,
+  X
 } from "lucide-react";
 import { signOut } from "next-auth/react";
 
@@ -27,16 +30,45 @@ export default function AdminLayout({
 }: {
   children: React.ReactNode;
 }) {
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const pathname = usePathname();
 
   if (pathname === "/admin/login") return <>{children}</>;
 
+  const toggleSidebar = () => setIsSidebarOpen(!isSidebarOpen);
+
   return (
-    <div className="min-h-screen bg-black flex">
+    <div className="min-h-screen bg-black flex flex-col md:flex-row">
+      {/* Mobile Header */}
+      <header className="md:hidden flex items-center justify-between p-4 bg-zinc-950 border-b border-white/5 sticky top-0 z-50">
+        <Link href="/" className="flex items-center gap-2">
+          <Star className="w-6 h-6 text-white fill-white" />
+          <span className="text-lg font-black tracking-tighter text-white uppercase">Star-Admin</span>
+        </Link>
+        <button 
+          onClick={toggleSidebar}
+          className="p-2 text-zinc-400 hover:text-white"
+        >
+          {isSidebarOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
+        </button>
+      </header>
+
+      {/* Backdrop */}
+      {isSidebarOpen && (
+        <div 
+          className="fixed inset-0 bg-black/60 backdrop-blur-sm z-40 md:hidden"
+          onClick={() => setIsSidebarOpen(false)}
+        />
+      )}
+
       {/* Sidebar */}
-      <aside className="w-64 bg-zinc-950 border-r border-white/5 flex flex-col fixed h-full z-40">
+      <aside 
+        className={`w-64 bg-zinc-950 border-r border-white/5 flex flex-col fixed h-full z-50 transition-transform duration-300 md:translate-x-0 ${
+          isSidebarOpen ? "translate-x-0" : "-translate-x-full"
+        }`}
+      >
         <div className="p-6">
-          <Link href="/" className="flex items-center gap-2 mb-8">
+          <Link href="/" className="hidden md:flex items-center gap-2 mb-8">
             <Star className="w-6 h-6 text-white fill-white" />
             <span className="text-lg font-black tracking-tighter text-white">STAR-ADMIN</span>
           </Link>
@@ -48,6 +80,7 @@ export default function AdminLayout({
                 <Link
                   key={item.name}
                   href={item.href}
+                  onClick={() => setIsSidebarOpen(false)}
                   className={`flex items-center justify-between px-4 py-3 rounded-xl text-sm font-bold transition-all ${
                     isActive 
                     ? "bg-white text-black" 
@@ -77,7 +110,7 @@ export default function AdminLayout({
       </aside>
 
       {/* Main Content */}
-      <main className="flex-1 ml-64 p-8">
+      <main className="flex-1 md:ml-64 p-4 md:p-8">
         <div className="max-w-6xl mx-auto">
           {children}
         </div>
